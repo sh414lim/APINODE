@@ -1,7 +1,6 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { User, Domain } = require('../models');
-const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
@@ -21,13 +20,13 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/domain', isLoggedIn, async (req, res, next) => {
+router.post('/domain', async (req, res, next) => {
   try {
     await Domain.create({
       UserId: req.user.id,
       host: req.body.host,
       type: req.body.type,
-      clientSecret: uuidv4(), //key 를 만들떄 사용 (36자리)
+      clientSecret: uuidv4(),
     });
     res.redirect('/');
   } catch (err) {
