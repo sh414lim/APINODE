@@ -10,10 +10,10 @@ const router = express.Router();
 
 //토큰 발급 라우터
 router.post('/token', async (req,res)=>{
-    const {clientSecret} = req.body;
+    const {CLIENT_SECRET} = req.body;
     try{ //도메인 등록 검사
         const domain=await Domain.findOne({
-            were:{clientSecret},
+            were:{CLIENT_SECRET},
             include:{
                 model:User,
                 attribute:['nick','id'],
@@ -31,7 +31,7 @@ router.post('/token', async (req,res)=>{
             nick:domain.User.nick,
         },process.env.JWT_SECRET,{ //시크릿 털리면 망해요.... 
         //토큰 옵션
-            // expireseIn:'1m',//1분
+            // expireseIn:'3m',//1분
             issuer:'nodebird', //누가 보내줫는가
         }
         );
@@ -55,6 +55,7 @@ router.get('/test',verifyToken,(req,res)=>{
     res.json(req.decoded);
 });
 
+//디코디에 들어잇는 자기자신 데이터
 router.get('/posts/my', verifyToken,(req,res)=>{
     post.findAll({where : {userId : req.decoded.id}})
     .then((posts)=>{
