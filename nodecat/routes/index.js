@@ -28,10 +28,10 @@ router.get('/test', async (req, res, next) => { // 토큰 테스트 라우터
       }
     }
     // 발급받은 토큰 테스트
-    // const result = await axios.get('http://localhost:8002/v1/test', {
-    //   headers: { authorization : req.session.jwt }, //발급 받은 토큰을 authorization 에 넣어서 테스트를 한다
-    // });
-    // return res.json(result.data);
+    const result = await axios.get('http://localhost:8002/v1/test', {
+      headers: { authorization : req.session.jwt }, //발급 받은 토큰을 authorization 에 넣어서 테스트를 한다
+    });
+    return res.json(result.data);
   } catch (error) {
     console.error(error);
     if (error.response.status === 419) { // 토큰 만료 시
