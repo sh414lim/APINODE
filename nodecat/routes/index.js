@@ -34,11 +34,6 @@ router.get('/test', async (req, res, next) => { // 토큰 테스트 라우터
     return res.json(result.data);
   } catch (error) {
     console.error(error);
-    if (error.response.status === 419) { // 토큰 만료 시
-      delete req.session.jwt; // 발급
-      return request (req,api);
-    }
-    return error.response;
   }
 });
 
